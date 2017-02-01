@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletRequest
 @RestController
 class HelloWorldController
 {
-    val emptyBody = "<empty/>"
+    private val emptyBody = "<empty/>"
 
     data class SimpleTextResponse(val text: String)
 
@@ -17,7 +17,10 @@ class HelloWorldController
     fun helloWorld() = SimpleTextResponse("Hello, World!")
 
     @PostMapping("/post")
-    fun showPost(@RequestBody data: String) = println(data)
+    fun showPost(@RequestBody data: String): String {
+        println(data)
+        return "OK"
+    }
 
     // catch all, prints request path
     @RequestMapping("/*")
@@ -25,8 +28,12 @@ class HelloWorldController
     {
         print("Unmapped ${request.method} request: ${request.requestURI}")
 
-        if (request.queryString != null) println("?${request.queryString}")
-        else println()
+        if (request.queryString != null) {
+            println("?${request.queryString}")
+        }
+        else {
+            println()
+        }
 
         val body = data ?: emptyBody
         println("Body: $body")
